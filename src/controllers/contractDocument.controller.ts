@@ -4,15 +4,13 @@
  */
 
 import { Request, Response, NextFunction } from 'express';
-// TODO: import
-// import { ContractDocumentService } from '../services/contractDocument.service';
+import { ContractDocumentService } from '../services/contractDocument.service';
 
 // ============================================
 // ContractDocumentController
 // ============================================
 export class ContractDocumentController {
-  // TODO: 의존성 주입
-  // constructor(private service: ContractDocumentService) {}
+  constructor(private service: ContractDocumentService) {}
 
   // ==========================================
   // GET /contractDocuments
@@ -35,14 +33,10 @@ export class ContractDocumentController {
   // GET /contractDocuments/draft
   // 계약서 추가 시 계약 목록 조회
   // ==========================================
-  // TODO: getDraftContracts
-  // 응답: 200 OK + ContractListResponseDto
   getDraftContracts = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // TODO: 구현
-      // 1. service.getDraftContracts() 호출
-      // 2. 200 응답 반환
-      throw new Error('Not implemented');
+      const contracts = await this.service.getDraftContracts();
+      res.status(200).json(contracts);
     } catch (error) {
       next(error);
     }
