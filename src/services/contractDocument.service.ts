@@ -3,8 +3,9 @@
  * @author 김민기
  */
 
-// TODO: import
-// import { ContractDocumentRepository } from '../repositories/contractDocument.repository';
+import { ContractDocumentRepository } from '../repositories/contractDocument.repository';
+import { DraftContractResponseDto } from '../types/contractDocument.type';
+// TODO: 추후 구현 시 import
 // import { uploadFile, getDownloadUrl, deleteFile, generateFileKey } from '../utils/s3.util';
 // import { sendContractEmail } from '../utils/email.util';
 // import { NotFoundError } from '../errors/errorHandler';
@@ -13,8 +14,7 @@
 // ContractDocumentService
 // ============================================
 export class ContractDocumentService {
-  // TODO: 의존성 주입
-  // constructor(private repository: ContractDocumentRepository) {}
+  constructor(private repository: ContractDocumentRepository) {}
 
   // ==========================================
   // GET /contractDocuments
@@ -34,14 +34,8 @@ export class ContractDocumentService {
   // GET /contractDocuments/draft
   // 계약서 추가 시 계약 목록 조회
   // ==========================================
-  // TODO: getDraftContracts - 계약서 추가용 계약 목록 조회
-  // @returns Promise<ContractListResponseDto>
-  // 로직:
-  // 1. repository.findDraftContracts() 호출
-  // 2. 이미 문서가 등록된 계약 목록 반환
-  async getDraftContracts(): Promise<any> {
-    // TODO: 구현
-    throw new Error('Not implemented');
+  async getDraftContracts(): Promise<DraftContractResponseDto[]> {
+    return this.repository.findDraftContracts();
   }
 
   // ==========================================
