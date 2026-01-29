@@ -3,8 +3,18 @@
  * @author 김민기
  */
 
-// TODO: import
-// import { ContractDocument } from '../types/contractDocument.type';
+import { DraftContractResponseDto } from '../types/contractDocument.type';
+
+// ============================================
+// Mock 데이터 (DB 연결 전까지 사용)
+// ============================================
+const MOCK_DRAFT_CONTRACTS: DraftContractResponseDto[] = [
+  { id: 1, data: '그랜저 - 김고객 고객님' },
+  { id: 2, data: 'K3 - 홍길동 고객님' },
+  { id: 3, data: '소나타 - 이영희 고객님' },
+  { id: 4, data: '아반떼 - 박철수 고객님' },
+  { id: 5, data: '카니발 - 최민수 고객님' },
+];
 
 // ============================================
 // ContractDocumentRepository
@@ -26,12 +36,10 @@ export class ContractDocumentRepository {
   // ==========================================
   // 계약 목록 조회 - draft (GET /contractDocuments/draft)
   // ==========================================
-  // TODO: findDraftContracts - 계약서 추가 시 계약 목록 조회
-  // @returns Promise<Contract[]>
-  // - 이미 문서가 있는 계약 목록 (추가 등록용)
-  async findDraftContracts(): Promise<any[]> {
-    // TODO: 구현
-    throw new Error('Not implemented');
+  async findDraftContracts(): Promise<DraftContractResponseDto[]> {
+    // TODO: DB 연결 후 실제 쿼리로 교체
+    // 현재는 Mock 데이터 반환
+    return MOCK_DRAFT_CONTRACTS;
   }
 
   // ==========================================
