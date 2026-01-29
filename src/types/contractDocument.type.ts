@@ -38,8 +38,15 @@ export interface UploadContractDocumentDto {}
 // ============================================
 // 응답 DTO
 // ============================================
+// GET /contractDocuments/draft 응답
+// 계약서 추가 시 계약 목록 조회용
+export interface DraftContractResponseDto {
+  id: number;
+  data: string; // "차량모델 - 고객명 고객님" 형식
+}
+
 // TODO: ContractListResponseDto - 계약 목록 응답
-// GET /contractDocuments, GET /contractDocuments/draft 용
+// GET /contractDocuments 용
 // - contracts: Contract[]
 // - total: 전체 개수
 export interface ContractListResponseDto {}
