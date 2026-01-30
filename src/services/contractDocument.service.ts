@@ -4,7 +4,11 @@
  */
 
 import { ContractDocumentRepository } from '../repositories/contractDocument.repository';
-import { DraftContractResponseDto } from '../types/contractDocument.type';
+import {
+  DraftContractResponseDto,
+  ContractListQuery,
+  ContractListResponseDto,
+} from '../types/contractDocument.type';
 // TODO: 추후 구현 시 import
 // import { uploadFile, getDownloadUrl, deleteFile, generateFileKey } from '../utils/s3.util';
 // import { sendContractEmail } from '../utils/email.util';
@@ -20,14 +24,18 @@ export class ContractDocumentService {
   // GET /contractDocuments
   // 계약서 업로드 시 계약 목록 조회
   // ==========================================
-  // TODO: getContracts - 계약 목록 조회
-  // @returns Promise<ContractListResponseDto>
-  // 로직:
-  // 1. repository.findContracts() 호출
-  // 2. 응답 DTO로 변환하여 반환
-  async getContracts(): Promise<any> {
-    // TODO: 구현
-    throw new Error('Not implemented');
+  async getContracts(query: ContractListQuery): Promise<ContractListResponseDto> {
+    const page = query.page || 1;
+    const pageSize = query.pageSize || 10;
+
+    const { data, total } = await this.repository.findContracts(query);
+
+    return {
+      currentPage: page,
+      totalPages: Math.ceil(total / pageSize),
+      totalItemCount: total,
+      data,
+    };
   }
 
   // ==========================================
