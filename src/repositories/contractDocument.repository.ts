@@ -3,7 +3,11 @@
  * @author 김민기
  */
 
-import { DraftContractResponseDto } from '../types/contractDocument.type';
+import {
+  DraftContractResponseDto,
+  ContractListItem,
+  ContractListQuery,
+} from '../types/contractDocument.type';
 
 // ============================================
 // Mock 데이터 (DB 연결 전까지 사용)
@@ -16,6 +20,73 @@ const MOCK_DRAFT_CONTRACTS: DraftContractResponseDto[] = [
   { id: 5, data: '카니발 - 최민수 고객님' },
 ];
 
+const MOCK_CONTRACTS: ContractListItem[] = [
+  {
+    id: 1,
+    contractName: '그랜저 신차 계약',
+    resolutionDate: '2026-02-22T09:00:00.000Z',
+    documentCount: 2,
+    userName: '김고객',
+    carNumber: '12가 3456',
+    documents: [
+      { id: 1, fileName: '계약서.pdf' },
+      { id: 2, fileName: '신분증사본.jpg' },
+    ],
+  },
+  {
+    id: 2,
+    contractName: 'K3 리스 계약',
+    resolutionDate: '2026-02-21T14:30:00.000Z',
+    documentCount: 1,
+    userName: '홍길동',
+    carNumber: '34나 5678',
+    documents: [{ id: 3, fileName: '리스계약서.pdf' }],
+  },
+  {
+    id: 3,
+    contractName: '소나타 할부 계약',
+    resolutionDate: '2026-02-20T11:00:00.000Z',
+    documentCount: 3,
+    userName: '이영희',
+    carNumber: '56다 7890',
+    documents: [
+      { id: 4, fileName: '할부계약서.pdf' },
+      { id: 5, fileName: '소득증빙.pdf' },
+      { id: 6, fileName: '인감증명.pdf' },
+    ],
+  },
+  {
+    id: 4,
+    contractName: '아반떼 현금 계약',
+    resolutionDate: '2026-02-19T16:00:00.000Z',
+    documentCount: 1,
+    userName: '박철수',
+    carNumber: '78라 1234',
+    documents: [{ id: 7, fileName: '매매계약서.pdf' }],
+  },
+  {
+    id: 5,
+    contractName: '카니발 법인 계약',
+    resolutionDate: '2026-02-18T10:00:00.000Z',
+    documentCount: 2,
+    userName: '최민수',
+    carNumber: '90마 5678',
+    documents: [
+      { id: 8, fileName: '법인계약서.pdf' },
+      { id: 9, fileName: '사업자등록증.pdf' },
+    ],
+  },
+  {
+    id: 6,
+    contractName: '투싼 신차 계약',
+    resolutionDate: '2026-02-17T13:00:00.000Z',
+    documentCount: 0,
+    userName: '정민호',
+    carNumber: '11바 2222',
+    documents: [],
+  },
+];
+
 // ============================================
 // ContractDocumentRepository
 // ============================================
@@ -25,12 +96,31 @@ export class ContractDocumentRepository {
   // ==========================================
   // 계약 목록 조회 (GET /contractDocuments)
   // ==========================================
-  // TODO: findContracts - 계약서 업로드 시 계약 목록 조회
-  // @returns Promise<Contract[]>
-  // - 계약 목록 반환 (계약서 업로드할 대상 선택용)
-  async findContracts(): Promise<any[]> {
-    // TODO: 구현
-    throw new Error('Not implemented');
+  async findContracts(
+    query: ContractListQuery
+  ): Promise<{ data: ContractListItem[]; total: number }> {
+    const { page = 1, pageSize = 10, searchBy, keyword } = query;
+
+    // 검색 필터링
+    let filtered = MOCK_CONTRACTS;
+    if (keyword && searchBy) {
+      filtered = MOCK_CONTRACTS.filter((contract) => {
+        if (searchBy === 'contractName') {
+          return contract.contractName.includes(keyword);
+        }
+        if (searchBy === 'userName') {
+          return contract.userName.includes(keyword);
+        }
+        return true;
+      });
+    }
+
+    // 페이지네이션
+    const total = filtered.length;
+    const start = (page - 1) * pageSize;
+    const data = filtered.slice(start, start + pageSize);
+
+    return { data, total };
   }
 
   // ==========================================
