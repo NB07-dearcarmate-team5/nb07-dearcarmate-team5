@@ -1,5 +1,5 @@
 import { Car as PrismaCar, CarStatus as PrismaCarStatus } from '@prisma/client';
-import type { Car, CarStatus, CarType } from '../types/car.type';
+import type { Car, CarListItem, CarStatus, CarType } from '../types/car.type';
 
 export class CarModel {
   static toApiStatus(status: PrismaCarStatus): CarStatus {
@@ -44,6 +44,23 @@ export class CarModel {
       explanation: car.explanation ?? null,
       accidentDetails: car.accidentDetails ?? null,
       status: this.toApiStatus(car.status),
+    };
+  }
+
+  static toListItem(car: Car): CarListItem {
+    return {
+      id: car.id,
+      carNumber: car.carNumber,
+      manufacturer: car.manufacturer,
+      model: car.model,
+      type: car.type,
+      manufacturingYear: car.manufacturingYear,
+      mileage: car.mileage,
+      price: car.price,
+      accidentCount: car.accidentCount,
+      explanation: car.explanation,
+      accidentDetails: car.accidentDetails,
+      status: car.status,
     };
   }
 }

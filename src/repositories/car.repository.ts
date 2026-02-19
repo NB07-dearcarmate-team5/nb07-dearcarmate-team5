@@ -77,7 +77,7 @@ export class CarRepositoryImpl implements CarRepository {
       }),
     ]);
 
-    return { totalCount, items: cars.map((car) => CarModel.toEntity(car)) };
+    return { totalCount, items: cars.map((car) => CarModel.toListItem(CarModel.toEntity(car))) };
   }
 
   async findById(companyId: number, carId: number): Promise<Car | null> {
