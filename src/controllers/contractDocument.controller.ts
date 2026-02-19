@@ -67,7 +67,7 @@ export class ContractDocumentController {
       res.setHeader('Content-Type', mimeType);
       res.setHeader(
         'Content-Disposition',
-        `attachment; filename="${encodeURIComponent(fileName)}"`
+        `attachment; filename*=UTF-8''${encodeURIComponent(fileName)}`
       );
       stream.pipe(res);
     } catch (error) {
