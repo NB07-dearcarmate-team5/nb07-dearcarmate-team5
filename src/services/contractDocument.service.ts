@@ -47,12 +47,13 @@ export class ContractDocumentService {
       throw new BadRequestError('파일이 필요합니다');
     }
 
-    const fileKey = generateFileKey(contractId ?? 0, file.originalname);
+    const fileName = Buffer.from(file.originalname, 'latin1').toString('utf8');
+    const fileKey = generateFileKey(contractId ?? 0, fileName);
     await uploadFile(file.buffer, fileKey, file.mimetype);
 
     const document = await this.repository.create({
       contractId: contractId ?? null,
-      fileName: file.originalname,
+      fileName,
       fileKey,
       fileSize: file.size,
       mimeType: file.mimetype,
@@ -67,7 +68,7 @@ export class ContractDocumentService {
           docWithContract.contract.customer.email,
           docWithContract.contract.customer.name,
           contractName,
-          [{ filename: file.originalname, content: file.buffer }]
+          [{ filename: fileName, content: file.buffer }]
         );
       }
     } catch (emailError) {
