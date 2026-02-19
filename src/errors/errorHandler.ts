@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { StructError } from 'superstruct';
+import multer from 'multer';
 import { CustomError } from './customError';
 
 export const errorHandler = (
@@ -11,6 +12,12 @@ export const errorHandler = (
   if (err instanceof CustomError) {
     return res.status(err.statusCode).json({
       message: err.message,
+    });
+  }
+
+  if (err instanceof multer.MulterError) {
+    return res.status(400).json({
+      message: `파일 업로드 오류: ${err.message}`,
     });
   }
 

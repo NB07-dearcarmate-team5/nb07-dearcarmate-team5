@@ -35,7 +35,7 @@ export const contractDocumentUpload = multer({
   storage,
   fileFilter: contractDocumentFileFilter,
   limits: { fileSize: UPLOAD_LIMITS.MAX_FILE_SIZE },
-}).single('contractDocument');
+}).single('file');
 
 const csvFileFilter = (
   req: Request,

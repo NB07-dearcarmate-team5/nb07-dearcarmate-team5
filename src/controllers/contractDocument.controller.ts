@@ -16,7 +16,7 @@ export class ContractDocumentController {
       const query: ContractListQuery = {
         page: req.query.page ? Number(req.query.page) : undefined,
         pageSize: req.query.pageSize ? Number(req.query.pageSize) : undefined,
-        searchBy: req.query.searchBy as 'contractName' | 'userName' | undefined,
+        searchBy: req.query.searchBy as 'contractName' | 'userName' | 'carNumber' | undefined,
         keyword: req.query.keyword as string | undefined,
       };
       const { companyId } = req.user!;
@@ -39,10 +39,7 @@ export class ContractDocumentController {
 
   uploadDocuments = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const contractId = Number(req.body.contractId);
-      if (!contractId || isNaN(contractId)) {
-        throw new BadRequestError('계약 ID가 필요합니다');
-      }
+      const contractId = req.body.contractId ? Number(req.body.contractId) : undefined;
 
       const file = req.file;
       if (!file) {

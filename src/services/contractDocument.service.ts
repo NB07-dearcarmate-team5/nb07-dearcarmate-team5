@@ -40,18 +40,18 @@ export class ContractDocumentService {
   }
 
   async uploadDocument(
-    contractId: number,
+    contractId: number | undefined,
     file: Express.Multer.File
   ): Promise<ContractDocumentResponseDto> {
     if (!file) {
       throw new BadRequestError('파일이 필요합니다');
     }
 
-    const fileKey = generateFileKey(contractId, file.originalname);
+    const fileKey = generateFileKey(contractId ?? 0, file.originalname);
     await uploadFile(file.buffer, fileKey, file.mimetype);
 
     const document = await this.repository.create({
-      contractId,
+      contractId: contractId ?? null,
       fileName: file.originalname,
       fileKey,
       fileSize: file.size,

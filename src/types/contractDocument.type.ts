@@ -20,7 +20,7 @@ export interface ContractDocument {
 export interface ContractListQuery {
   page?: number | undefined;
   pageSize?: number | undefined;
-  searchBy?: 'contractName' | 'userName' | undefined;
+  searchBy?: 'contractName' | 'userName' | 'carNumber' | undefined;
   keyword?: string | undefined;
 }
 
