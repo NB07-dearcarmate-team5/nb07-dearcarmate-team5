@@ -142,8 +142,8 @@ model ContractDocument {
   fileSize   Int // 파일 크기 (bytes)
   mimeType   String // MIME 타입
 
-  contractId Int
-  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  contractId Int?
+  contract   Contract? @relation(fields: [contractId], references: [id], onDelete: SetNull)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
