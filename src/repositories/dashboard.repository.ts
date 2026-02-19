@@ -17,9 +17,9 @@ export const getDashboardData = async (companyId: number, lastMonthStart: Date) 
       contracts: {
         where: { 
           status: 'contractSuccessful',
-          created_at: { gte: lastMonthStart } 
+          resolutionDate: { gte: lastMonthStart } 
         },
-        select: { contractPrice: true, created_at: true }
+        select: { contractPrice: true, resolutionDate: true }
       }
     }
   });

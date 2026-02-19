@@ -40,7 +40,7 @@ export async function getDashboardService(companyId: number): Promise<DashboardR
     const type = car.type as keyof typeof stats.byType;
     
     car.contracts.forEach((con) => {
-      if (con.created_at >= thisMonthStart) {
+      if (con.resolutionDate && con.resolutionDate >= thisMonthStart) {
         stats.monthlySales += con.contractPrice;
         if (stats.byType[type]) {
           stats.byType[type].count++;
@@ -54,7 +54,7 @@ export async function getDashboardService(companyId: number): Promise<DashboardR
 
   //성장률 계산 
   const growthRate = stats.lastMonthSales > 0n 
-    ? Number(((Number(stats.monthlySales - stats.lastMonthSales) / Number(stats.lastMonthSales)) * 100).toFixed(2))
+    ? Number((Number(stats.monthlySales - stats.lastMonthSales) / Number(stats.lastMonthSales)).toFixed(4))
     : (stats.monthlySales > 0n ? 100 : 0);
 
 
