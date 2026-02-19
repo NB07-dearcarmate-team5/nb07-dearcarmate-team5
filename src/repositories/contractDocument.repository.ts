@@ -24,9 +24,14 @@ export class ContractDocumentRepository {
 
     if (keyword && searchBy) {
       if (searchBy === 'contractName') {
-        where.car = { model: { contains: keyword, mode: 'insensitive' } };
+        where.OR = [
+          { car: { model: { contains: keyword, mode: 'insensitive' } } },
+          { customer: { name: { contains: keyword, mode: 'insensitive' } } },
+        ];
       } else if (searchBy === 'userName') {
         where.user = { companyId, name: { contains: keyword, mode: 'insensitive' } };
+      } else if (searchBy === 'carNumber') {
+        where.car = { carNumber: { contains: keyword, mode: 'insensitive' } };
       }
     }
 
@@ -53,7 +58,7 @@ export class ContractDocumentRepository {
         ? contract.resolutionDate.toISOString()
         : '',
       documentCount: contract.contractDocument.length,
-      userName: contract.user.name,
+      userName: contract.user?.name ?? '',
       carNumber: contract.car.carNumber,
       documents: contract.contractDocument.map((doc: { id: number; fileName: string }) => ({
         id: doc.id,
@@ -81,7 +86,7 @@ export class ContractDocumentRepository {
   }
 
   async create(data: {
-    contractId: number;
+    contractId: number | null;
     fileName: string;
     fileKey: string;
     fileSize: number;
