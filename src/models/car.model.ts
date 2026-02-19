@@ -1,5 +1,5 @@
 import { Car as PrismaCar, CarStatus as PrismaCarStatus } from '@prisma/client';
-import type { Car, CarStatus } from '../types/car.type';
+import type { Car, CarStatus, CarType } from '../types/car.type';
 
 export class CarModel {
   static toApiStatus(status: PrismaCarStatus): CarStatus {
@@ -28,13 +28,15 @@ export class CarModel {
   }
 
   static toEntity(car: PrismaCar): Car {
+    if (car.type == null) throw new Error('Car.type is missing');
+
     return {
       id: car.id,
       companyId: car.companyId,
       carNumber: car.carNumber,
       manufacturer: car.manufacturer,
       model: car.model,
-      type: car.type as Car['type'],
+      type: car.type as unknown as CarType,
       manufacturingYear: car.manufacturingYear,
       mileage: car.mileage,
       price: this.bigintToNumberSafe(car.price, 'price'),

@@ -7,7 +7,7 @@ export interface Car {
   carNumber: string;
   manufacturer: string;
   model: string;
-  type?: CarType;
+  type: CarType;
   manufacturingYear: number;
   mileage: number;
   price: number;
