@@ -8,7 +8,7 @@ const CoercedInteger = coerce(
   (value) => parseInt(value, 10)
 );
 
-const Manufacturer = enums(['기아', '쉐보레', '현대', '제네시스', '삼성', '쌍용', '기타']);
+const Manufacturer = enums(['기아', '현대', '제네시스', '테슬라']);
 const CarStatus = enums(['possession', 'contractProceeding', 'contractCompleted']);
 const CarType = enums(['세단', '경차', 'SUV']);
 
