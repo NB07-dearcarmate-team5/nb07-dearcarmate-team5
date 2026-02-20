@@ -61,7 +61,11 @@ export class ContractController {
   //계약 삭제
   deleteContract = async (req: Request, res: Response) => {
     const { contractId } = create(req.params, ContractIdParam);
-    const message = await this.contractService.deleteContract(contractId);
+    const { userId } = create(req.user, ValidateUserId);
+    const message = await this.contractService.deleteContract(
+      contractId,
+      userId,
+    );
 
     return res.status(200).json(message);
   };
