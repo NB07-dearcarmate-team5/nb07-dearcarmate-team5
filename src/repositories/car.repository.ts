@@ -47,6 +47,8 @@ export class CarRepositoryImpl implements CarRepository {
         ...input,
         price: BigInt(input.price),
         status: PrismaCarStatusEnum.POSSESSION,
+        explanation: input.explanation ?? null,
+      accidentDetails: input.accidentDetails ?? null,
       },
     });
     return CarModel.toEntity(created);
