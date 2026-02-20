@@ -175,8 +175,11 @@ export class ContractService {
   };
 
   // 계약 삭제
-  deleteContract = async (contractId: number) => {
+  deleteContract = async (contractId: number, userId: number) => {
     const contract = await this.validateContract(contractId);
+    if (contract.userId !== userId) {
+      throw new BadRequestError('담당자만 삭제가 가능합니다.');
+    }
     const carId = contract.carId;
 
     await prisma.$transaction(async (tx) => {
