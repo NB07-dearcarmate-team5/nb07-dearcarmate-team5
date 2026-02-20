@@ -10,12 +10,14 @@ const CoercedInteger = coerce(
 
 const Manufacturer = enums(['기아', '쉐보레', '현대', '제네시스', '삼성', '쌍용', '기타']);
 const CarStatus = enums(['possession', 'contractProceeding', 'contractCompleted']);
+const CarType = enums(['세단', '경차', 'SUV']);
 
 export const CreateCarBody = object({
   companyId: optional(number()),
   carNumber: size(string(), 1, 20),
   manufacturer: Manufacturer,
   model: size(string(), 1, 50),
+  type: CarType,
   manufacturingYear: number(),
   mileage: number(),
   price: number(),
