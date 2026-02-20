@@ -11,6 +11,17 @@ import {
   SearchOption,
   UpdateContract,
 } from '../structs/contract.struct';
+import { sendContractEmail } from '../utils/email.util';
+import { getFileStream } from '../utils/s3.util';
+import { Readable } from 'stream';
+
+const streamToBuffer = (stream: Readable): Promise<Buffer> =>
+  new Promise((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
+    stream.on('end', () => resolve(Buffer.concat(chunks)));
+    stream.on('error', reject);
+  });
 
 export class ContractService {
   private contractRepo = new ContractRepo();
@@ -123,6 +134,42 @@ export class ContractService {
       }
       return updateContract;
     });
+
+    // 계약 문서가 추가된 경우 이메일 발송
+    if (params.contractDocuments && params.contractDocuments.length > 0) {
+      try {
+        const contractWithDetails = await prisma.contract.findUnique({
+          where: { id: contractId },
+          include: {
+            customer: { select: { name: true, email: true } },
+            car: { select: { model: true } },
+            contractDocument: {
+              where: { id: { in: params.contractDocuments.map((d) => d.id) } },
+              select: { id: true, fileName: true, fileKey: true },
+            },
+          },
+        });
+
+        if (contractWithDetails) {
+          const contractName = `${contractWithDetails.car.model} - ${contractWithDetails.customer.name}`;
+          const attachments = await Promise.all(
+            contractWithDetails.contractDocument.map(async (doc) => {
+              const stream = await getFileStream(doc.fileKey);
+              const buffer = await streamToBuffer(stream);
+              return { filename: doc.fileName, content: buffer };
+            }),
+          );
+          await sendContractEmail(
+            contractWithDetails.customer.email,
+            contractWithDetails.customer.name,
+            contractName,
+            attachments,
+          );
+        }
+      } catch (emailError) {
+        console.error('이메일 발송 실패:', emailError);
+      }
+    }
 
     return new ContractResponseDto(update);
   };
