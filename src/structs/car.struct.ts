@@ -22,8 +22,8 @@ export const CreateCarBody = object({
   mileage: number(),
   price: number(),
   accidentCount: number(),
-  explanation: string(),
-  accidentDetails: string(),
+  explanation: optional(string()),
+  accidentDetails: optional(string()),
   status: defaulted(CarStatus, 'possession'),
 });
 
@@ -32,12 +32,13 @@ export const UpdateCarBody = partial(object({
   carNumber: size(string(), 1, 20),
   manufacturer: Manufacturer,
   model: size(string(), 1, 50),
+  type: optional(CarType),
   manufacturingYear: number(),
   mileage: number(),
   price: number(),
   accidentCount: number(),
-  explanation: string(),
-  accidentDetails: string(),
+  explanation: optional(string()),
+  accidentDetails: optional(string()),
 }));
 
 export const CarListQuery = object({
