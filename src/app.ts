@@ -25,7 +25,8 @@ app.use(morgan('dev'));
 
 app.use(
   cors({
-    origin: 'http://localhost:3000', // 프론트엔드 주소 (Next.js 포트)
+    origin: 'https://dearcarmate-team5.onrender.com', // 프론트엔드 주소 (Next.js 포트)
+            //'http://localhost:3000',
     credentials: true, // 쿠키나 인증 헤더(Authorization)를 주고받기 위해 필수!
     methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
